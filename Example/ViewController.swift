@@ -9,6 +9,7 @@ class ViewController: UIViewController {
     enum AlertType: String {
         
         case simple = "Simple"
+        case singlePhoto = "Single Photo"
         case simpleWithImages = "Simple +Images"
         case oneTextField = "One TextField"
         case twoTextFields = "Login form"
@@ -28,6 +29,7 @@ class ViewController: UIViewController {
         var description: String {
             switch self {
             case .simple: return "3 different buttons"
+            case .singlePhoto: return "Selection one single photo (cameras and videos are disabled)"
             case .simpleWithImages: return "3 buttons with image"
             case .dataPicker: return "Select date and time"
             case .pickerView: return "Select alert's main view height"
@@ -46,30 +48,9 @@ class ViewController: UIViewController {
             }
         }
         
-        var image: UIImage {
-            switch self {
-            case .simple: return #imageLiteral(resourceName: "title")
-            case .simpleWithImages: return #imageLiteral(resourceName: "two_squares")
-            case .dataPicker: return #imageLiteral(resourceName: "calendar")
-            case .pickerView: return #imageLiteral(resourceName: "picker")
-            case .oneTextField: return #imageLiteral(resourceName: "pen")
-            case .twoTextFields: return #imageLiteral(resourceName: "login")
-            case .countryPicker: return #imageLiteral(resourceName: "globe")
-            case .phoneCodePicker: return #imageLiteral(resourceName: "telephone")
-            case .currencyPicker: return #imageLiteral(resourceName: "currency")
-            case .imagePicker: return #imageLiteral(resourceName: "listings")
-            case .photoLibraryPicker: return #imageLiteral(resourceName: "four_rect")
-            case .colorPicker: return #imageLiteral(resourceName: "colors")
-            case .textViewer: return #imageLiteral(resourceName: "title")
-            case .contactsPicker: return #imageLiteral(resourceName: "user")
-            case .locationPicker: return #imageLiteral(resourceName: "planet")
-            case .telegramPicker: return #imageLiteral(resourceName: "library")
-            }
-        }
-        
         var color: UIColor? {
             switch self {
-            case .simple, .simpleWithImages, .telegramPicker:
+            case .simple, .simpleWithImages, .telegramPicker, .singlePhoto:
                 return UIColor(hex: 0x007AFF)
             case .oneTextField, .twoTextFields:
                 return UIColor(hex: 0x5AC8FA)
@@ -85,7 +66,25 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .imagePicker, .photoLibraryPicker, .colorPicker, .textViewer, .contactsPicker, .locationPicker, .telegramPicker]
+    fileprivate lazy var alerts: [AlertType] = [
+        .telegramPicker,
+        .singlePhoto,
+        .simple,
+        .simpleWithImages,
+        .oneTextField,
+        .twoTextFields,
+        .dataPicker,
+        .pickerView,
+        .countryPicker,
+        .phoneCodePicker,
+        .currencyPicker,
+        .imagePicker,
+        .photoLibraryPicker,
+        .colorPicker,
+        .textViewer,
+        .contactsPicker,
+        .locationPicker
+    ]
     
     // MARK: UI Metrics
     
@@ -98,6 +97,8 @@ class ViewController: UIViewController {
     
     
     // MARK: Properties
+    
+    private var alertIconCollection = AlertIconCollection()
     
     fileprivate var alertStyle: UIAlertControllerStyle = .actionSheet
     
@@ -209,9 +210,9 @@ class ViewController: UIViewController {
                 textField.left(image: #imageLiteral(resourceName: "pen"), color: .black)
                 textField.leftViewPadding = 12
                 textField.becomeFirstResponder()
-                textField.borderWidth = 1
-                textField.cornerRadius = 8
-                textField.borderColor = UIColor.lightGray.withAlphaComponent(0.5)
+                textField.layer.borderWidth = 1
+                textField.layer.cornerRadius = 8
+                textField.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
                 textField.backgroundColor = nil
                 textField.textColor = .black
                 textField.placeholder = "Type something"
@@ -254,8 +255,8 @@ class ViewController: UIViewController {
                 textField.left(image: #imageLiteral(resourceName: "padlock"), color: UIColor(hex: 0x007AFF))
                 textField.leftViewPadding = 16
                 textField.leftTextPadding = 12
-                textField.borderWidth = 1
-                textField.borderColor = UIColor.lightGray.withAlphaComponent(0.5)
+                textField.layer.borderWidth = 1
+                textField.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
                 textField.backgroundColor = nil
                 textField.textColor = .black
                 textField.placeholder = "Password"
@@ -387,18 +388,38 @@ class ViewController: UIViewController {
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
-        case .telegramPicker:
+        case .telegramPicker, .singlePhoto:
             let alert = UIAlertController(style: .actionSheet)
-            alert.addTelegramPicker { result in
+            alert.view.tintColor = UIColor.purple
+            
+            let picker = TelegramPickerViewController(selection: { [weak alert] result in
                 switch result {
-                case .photo(let assets):
+                case .media(let assets):
                     Log(assets)
+                case .photoLibrary:
+                    Log("photo library")
                 case .contact(let contact):
                     Log(contact)
                 case .location(let location):
                     Log(location)
+                case .camera(let stream):
+                    Log(stream)
+                    alert?.dismiss(animated: true, completion: nil)
+                case .photosAsDocuments(let assets):
+                    Log("Photo as documents: " + assets.description)
+                case .document:
+                    Log("Document")
                 }
+            }, localizer: ExampleTelegramPickerLocalizer())
+            
+            if type == .singlePhoto {
+                picker.mediaTypes = [.photos, .camera]
+                picker.disabledButtonTypes = [.contact, .documentAsFile, .location, .file, .photoAsFile, .photoOrVideo]
+                picker.selectionMode = .single
             }
+            
+            alert.setTelegramPicker(picker)
+            
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
         }
@@ -432,8 +453,9 @@ extension ViewController: UICollectionViewDataSource {
         
         let alert = alerts[indexPath.item]
 
-        item.imageView.image = alert.image
+        item.imageView.image = alertIconCollection.icon(alertType: alert)
         item.imageView.tintColor = alert.color
+        item.imageView.contentMode = .scaleAspectFit
         item.title.text = alert.rawValue
         item.subtitle.text = alert.description
         item.subtitle.textColor = .darkGray

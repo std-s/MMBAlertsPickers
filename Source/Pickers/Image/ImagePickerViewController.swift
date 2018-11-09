@@ -69,10 +69,10 @@ final public class ImagePickerViewController: UIViewController {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.decelerationRate = UIScrollViewDecelerationRateFast
-        $0.contentInsetAdjustmentBehavior = .never
+//        $0.contentInsetAdjustmentBehavior = .never
         $0.bounces = false
         $0.backgroundColor = .clear
-        $0.maskToBounds = false
+        $0.layer.masksToBounds = false
         $0.clipsToBounds = false
         return $0
     }(UICollectionView(frame: .zero, collectionViewLayout: layout))
@@ -173,7 +173,7 @@ extension ImagePickerViewController: UICollectionViewDataSource {
 extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        Log("view size = \(view.bounds), collectionView = \(collectionView.size), itemSize = \(itemSize)")
+        Log("view size = \(view.bounds), collectionView = \(collectionView.frame.size), itemSize = \(itemSize)")
         return itemSize
     }
 }

@@ -8,11 +8,11 @@ extension UIAlertController {
     /// - Parameters:
     ///   - selection: action for selection of contact
     
-    public func addContactsPicker(selection: @escaping ContactsPickerViewController.Selection) {
+    public func addContactsPicker(localizer: TelegramPickerResourceProvider? = nil, selection: @escaping ContactsPickerViewController.Selection) {
         let selection: ContactsPickerViewController.Selection = selection
         var contact: Contact?
         
-        let addContact = UIAlertAction(title: "Add Contact", style: .default) { action in
+        let addContact = UIAlertAction(title: localizer?.localized(buttonType: .addContact) ?? "Add Contact", style: .default) { action in
             selection(contact)
         }
         addContact.isEnabled = false
@@ -119,7 +119,7 @@ final public class ContactsPickerViewController: UIViewController {
     
     override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        tableView.tableHeaderView?.height = 57
+        tableView.tableHeaderView?.frame.size.height = 57
         searchController.searchBar.sizeToFit()
         searchController.searchBar.frame.size.width = searchView.frame.size.width
         searchController.searchBar.frame.size.height = searchView.frame.size.height
@@ -166,7 +166,7 @@ final public class ContactsPickerViewController: UIViewController {
 
         case .denied, .restricted:
             /// User has denied the current app to access the contacts.
-            let productName = Bundle.main.infoDictionary!["CFBundleName"]!
+            let productName = Bundle.main.dlgpicker_appName
             let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your contacts.")
             alert.addAction(title: "Settings", style: .destructive) { action in
                 if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {

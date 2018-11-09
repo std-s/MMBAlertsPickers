@@ -97,10 +97,10 @@ final public class PhotoLibraryPickerViewController: UIViewController {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.decelerationRate = UIScrollViewDecelerationRateFast
-        $0.contentInsetAdjustmentBehavior = .always
+//        $0.contentInsetAdjustmentBehavior = .always
         $0.bounces = true
         $0.backgroundColor = .clear
-        $0.maskToBounds = false
+        $0.layer.masksToBounds = false
         $0.clipsToBounds = false
         return $0
         }(UICollectionView(frame: .zero, collectionViewLayout: layout))
@@ -177,7 +177,7 @@ final public class PhotoLibraryPickerViewController: UIViewController {
             
         case .denied, .restricted:
             /// User has denied the current app to access the contacts.
-            let productName = Bundle.main.infoDictionary!["CFBundleName"]!
+            let productName = Bundle.main.dlgpicker_appName
             let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your photo library.")
             alert.addAction(title: "Settings", style: .destructive) { action in
                 if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {

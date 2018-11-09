@@ -7,6 +7,10 @@ final class ContactTableViewCell: UITableViewCell {
     static let identifier = String(describing: ContactTableViewCell.self)
     static let size: CGSize = CGSize(width: 80, height: 80)
     
+    //MARK: Private Properties
+    
+    private let textLabelMarginLeft: CGFloat = 75.0
+    
     var contact: Contact?
     
     // MARK: Initialize
@@ -16,7 +20,8 @@ final class ContactTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = nil
         contentView.backgroundColor = nil
-        imageView?.maskToBounds = true
+        imageView?.layer.masksToBounds = true
+        imageView?.contentMode = .scaleAspectFill
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,9 +30,11 @@ final class ContactTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let value: CGFloat = self.contentView.height - 8
-        imageView?.size = CGSize(width: value, height: value)
-        imageView?.circleCorner = true
+        let value: CGFloat = self.contentView.frame.size.height - 8
+        imageView?.frame.size = CGSize(width: value, height: value)
+        imageView?.dlgpicker_setupRoundCorners()
+        textLabel?.frame = CGRect(origin: CGPoint(x: textLabelMarginLeft, y: textLabel?.frame.origin.y ?? 0), size: textLabel?.bounds.size ?? CGSize.zero)
+        detailTextLabel?.frame = CGRect(origin: CGPoint(x: textLabelMarginLeft, y: detailTextLabel?.frame.origin.y ?? 0), size: detailTextLabel?.bounds.size ?? CGSize.zero)
     }
     
     // MARK: Configure Selection

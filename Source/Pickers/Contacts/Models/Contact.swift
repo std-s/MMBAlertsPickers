@@ -3,17 +3,36 @@ import Contacts
 
 public struct Contact {
     
-    var value: CNContact
+    public var value: CNContact
     
-    var firstName: String
-    var lastName: String
-    var company: String
-    var image: UIImage?
-    var thumbnail: UIImage?
-    var birthday: Date?
-    var id: String?
-    var phones: [(number: String, label: String)] = []
-    var emails: [(email: String, label: String )] = []
+    public var firstName: String
+    
+    public var lastName: String
+    
+    public var company: String
+    
+    public var image: UIImage?
+    
+    public var thumbnail: UIImage?
+    
+    public var birthday: Date?
+    
+    public var id: String?
+    
+    public var phones: [(number: String, label: String)] = []
+    
+    public var emails: [(email: String, label: String )] = []
+    
+    public var displayName:  String {
+        return firstName + " " + lastName
+    }
+    
+    public var initials: String {
+        var initials = String()
+        if let first = firstName.first { initials.append(first) }
+        if let second = lastName.first { initials.append(second) }
+        return initials
+    }
     
     public init(contact: CNContact) {
         value = contact
@@ -45,16 +64,5 @@ public struct Contact {
             let email = emailAddress.value as String
             emails.append((email, label))
         }
-    }
-    
-    var displayName:  String {
-        return firstName + " " + lastName
-    }
-    
-    var initials: String {
-        var initials = String()
-        if let first = firstName.first { initials.append(first) }
-        if let second = lastName.first { initials.append(second) }
-        return initials
     }
 }
