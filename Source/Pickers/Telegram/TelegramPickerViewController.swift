@@ -38,7 +38,7 @@ final public class TelegramPickerViewController: UIViewController {
     
     // MARK: - Nested
     
-    enum ButtonType {
+    public enum ButtonType: Int {
         case photoOrVideo
         case location
         case contact
@@ -46,6 +46,30 @@ final public class TelegramPickerViewController: UIViewController {
         case sendPhotos
         case documentAsFile
         case photoAsFile
+    }
+    
+    public enum SelectionMode: Int {
+        case single
+        case multiple
+    }
+    
+    public struct MediaType: OptionSet {
+        
+        public typealias RawValue = Int
+        
+        public let rawValue: Int
+        
+        public init(rawValue: RawValue) {
+            self.rawValue = rawValue
+        }
+        
+        public init(_ rawValue: RawValue) {
+            self.rawValue = rawValue
+        }
+        
+        public static let photos = MediaType.init(1 << 0)
+        public static let videos = MediaType.init(1 << 1)
+        public static let camera = MediaType.init(1 << 2)
     }
     
     enum StreamItem: Equatable {
@@ -140,15 +164,31 @@ final public class TelegramPickerViewController: UIViewController {
     
     public var dismissBehavior: DismissBehavior = .dismissPicker(animated: true)
     
-    fileprivate var mode = Mode.normal
+    fileprivate var mode = Mode.normal {
+        didSet {
+            resetButtons()
+        }
+    }
     
     let assetsCollection = AssetsCollection.init()
     
-    var buttons: [ButtonType] {
-        switch mode {
-        case .normal: return [.photoOrVideo, .file, .location, .contact]
-        case .bigPhotoPreviews: return [.sendPhotos, .photoAsFile]
-        case .documentType: return [.documentAsFile, .photoAsFile]
+    private var buttons: [ButtonType] = []
+    
+    /**
+     Buttons types that should not be shown under the media items stream.
+     - warning: It's expected that you configure this field before controller view did load. Otherwise behavior is undefined.
+     */
+    public var disabledButtonTypes: [ButtonType] = []
+    
+    /**
+     Describes what kind of media items should be shown.
+     - warning: It's expected that you configure this field before controller view did load. Otherwise behavior is undefined.
+     */
+    public var mediaTypes: MediaType = [.photos, .videos, .camera] {
+        didSet {
+            if isViewLoaded {
+                self.resetItems(assets: self.assetsCollection.assets)
+            }
         }
     }
     
@@ -164,12 +204,8 @@ final public class TelegramPickerViewController: UIViewController {
         }
     }
     
-    public var cameraCellNeeded: Bool = true {
-        didSet {
-            if cameraCellNeeded != oldValue, isViewLoaded {
-                self.layout.invalidateLayout()
-            }
-        }
+    public var cameraCellNeeded: Bool {
+        return self.mediaTypes.contains(.camera)
     }
     
     public var cameraStream: Camera.PreviewStream? = nil {
@@ -183,6 +219,12 @@ final public class TelegramPickerViewController: UIViewController {
     public var shouldShowCameraStream: Bool {
         return cameraCellNeeded && mode == .normal
     }
+    
+    /**
+     Describes behavior on items tap and configure UI accordingly.
+     - warning: It's expected that you configure this field before controller view did load. Otherwise behavior is undefined.
+     */
+    public var selectionMode = SelectionMode.multiple
     
     private var visibleItemEntries: [(indexPath: IndexPath, item: StreamItem)] {
         let indexPaths = collectionView.indexPathsForVisibleItems
@@ -306,6 +348,8 @@ final public class TelegramPickerViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
+        resetButtons()
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             preferredContentSize.width = UIScreen.main.bounds.width * 0.5
         }
@@ -356,7 +400,19 @@ final public class TelegramPickerViewController: UIViewController {
     
     func resetItems(assets: [PHAsset]) {
         
-        var newItems = assets.compactMap({ StreamItem.init(asset: $0) })
+        let videosAllowed = mediaTypes.contains(.videos)
+        let photosAllowed = mediaTypes.contains(.photos)
+        
+        var newItems = assets
+            .filter({
+                switch $0.mediaType {
+                case .image: return photosAllowed
+                case .video: return videosAllowed
+                default: return false
+                }
+            })
+            .compactMap({ StreamItem.init(asset: $0) })
+        
         if shouldShowCameraStream {
             newItems.insert(.camera, at: 0)
         }
@@ -534,7 +590,27 @@ final public class TelegramPickerViewController: UIViewController {
         }
     }
     
-    func action(withItem item: StreamItem, at indexPath: IndexPath) {
+    private func handleSingleSelectionUserChoice(item: StreamItem, at indexPath: IndexPath) {
+        
+        var selectionItem: TelegramSelectionType? = nil
+        
+        switch item {
+        case .camera:
+            if let stream = cameraStream {
+                selectionItem = .camera(stream)
+                selection(.camera(stream))
+            }
+            
+        case .photo(let asset), .video(let asset):
+            selectionItem = .media([asset])
+        }
+        
+        if let item = selectionItem {
+            self.dismissWithSelectionItem(item: item)
+        }
+    }
+    
+    private func handleMultiselectionUserChoice(item: StreamItem, at indexPath: IndexPath) {
         switch item {
         case .camera:
             if let stream = cameraStream {
@@ -548,6 +624,18 @@ final public class TelegramPickerViewController: UIViewController {
             collectionView.deselectItem(at: indexPath, animated: false)
             self.openPreview(with: asset, at: indexPath)
         }
+    }
+    
+    func action(withItem item: StreamItem, at indexPath: IndexPath) {
+        
+        switch selectionMode {
+        case .single:
+            handleSingleSelectionUserChoice(item: item, at: indexPath)
+            
+        case .multiple:
+            handleMultiselectionUserChoice(item: item, at: indexPath)
+        }
+        
     }
     
     func openPreview(with asset: PHAsset, at indexPath: IndexPath) {
@@ -678,6 +766,18 @@ final public class TelegramPickerViewController: UIViewController {
         self.applyMode(.documentType)
     }
     
+    private func buttonsForMode(_ mode: Mode) -> [ButtonType] {
+        switch mode {
+        case .normal: return [.photoOrVideo, .file, .location, .contact]
+        case .bigPhotoPreviews: return [.sendPhotos, .photoAsFile]
+        case .documentType: return [.documentAsFile, .photoAsFile]
+        }
+    }
+    
+    private func resetButtons() {
+        self.buttons = buttonsForMode(mode).filter({!disabledButtonTypes.contains($0)})
+    }
+    
     func action(for button: ButtonType) {
         switch button {
             
@@ -790,6 +890,8 @@ extension TelegramPickerViewController: UICollectionViewDataSource {
         default:
             cell = dequeue(collectionView, id: .photo, indexPath: indexPath)
         }
+        
+        cell.showSelectionCircles = selectionMode == .multiple
         
         return cell
     }
@@ -920,6 +1022,13 @@ extension TelegramPickerViewController: UICollectionViewDataSource {
             }
             cell.customContentView.representedStream = cameraStream
         }
+    }
+    
+    private func dismissWithSelectionItem(item: TelegramSelectionType) {
+        let selection = self.selection
+        alertController?.dismiss(animated: true, completion: {
+            selection(item)
+        })
     }
     
 }
