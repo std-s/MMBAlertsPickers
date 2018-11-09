@@ -43,6 +43,7 @@ public class CollectionViewCustomContentCell<CustomContentView: UIView>: UIColle
         didSet {
             if showSelectionCircles != oldValue {
                 updateSelectionAppearance()
+                selectionElement.isHidden = !showSelectionCircles
             }
         }
     }
