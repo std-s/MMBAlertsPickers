@@ -11,12 +11,12 @@ Pod::Spec.new do |s|
   s.name         = 'DLGPicker'
   s.version      = '1.1'
   s.summary      = 'Advanced usage of UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView adapted for using in DialogSDK'
-  s.homepage     = 'https://github.com/dialogs/Alerts-Pickers'
+  s.homepage     = 'https://github.com/loicgriffie/Alerts-Pickers'
   s.license      = 'MIT'
   s.author       = { 'dillidon' => 'dillidon@gmail.com' }
   s.platform     = :ios, '10.0'
   s.swift_version = '4.2'
-  s.source       = { :git => 'https://github.com/dialogs/Alerts-Pickers.git', :tag => s.version }
+  s.source       = { :git => 'https://github.com/loicgriffie/Alerts-Pickers.git', :tag => s.version }
   s.source_files  = 'Source/**/*.{swift}'
   s.resource  = 'Source/Pickers/Locale/Countries.bundle'
   s.resources = 'Example/Resources/*.xcassets'
