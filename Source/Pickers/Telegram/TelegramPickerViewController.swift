@@ -240,7 +240,7 @@ final public class TelegramPickerViewController: UIViewController {
         $0.allowsMultipleSelection = true
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        $0.decelerationRate = UIScrollView.DecelerationRate.fast
         $0.contentInset = UI.insets
         $0.backgroundColor = .clear
         $0.layer.masksToBounds = false
@@ -1203,7 +1203,7 @@ private extension TelegramPickerViewController {
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
             GalleryConfigurationItem.overlayColorOpacity(1),
             GalleryConfigurationItem.overlayBlurOpacity(1),
-            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
+            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffect.Style.light),
             
             GalleryConfigurationItem.videoControlsColor(.white),
             

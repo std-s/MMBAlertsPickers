@@ -100,7 +100,7 @@ class ViewController: UIViewController {
     
     private var alertIconCollection = AlertIconCollection()
     
-    fileprivate var alertStyle: UIAlertControllerStyle = .actionSheet
+    fileprivate var alertStyle: UIAlertController.Style = .actionSheet
     
     fileprivate lazy var segments: SegmentedControl = {
         let styles: [String] = ["Alert", "ActionSheet"]
@@ -121,7 +121,7 @@ class ViewController: UIViewController {
         $0.register(TypeOneCell.self, forCellWithReuseIdentifier: TypeOneCell.identifier)
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        $0.decelerationRate = UIScrollView.DecelerationRate.fast
         //$0.contentInsetAdjustmentBehavior = .never
         $0.bounces = true
         $0.backgroundColor = .white
@@ -188,7 +188,7 @@ class ViewController: UIViewController {
         switch type {
             
         case .simple:
-            let alert = UIAlertController(style: self.alertStyle, title: "Simple Alert", message: "3 kinds of actions")
+            let alert = UIAlertController(title: "Simple Alert", message: "3 kinds of actions", preferredStyle: self.alertStyle)
             alert.addAction(title: "Default", style: .default)
             alert.addAction(title: "Cancel", style: .cancel)
             alert.addAction(title: "Destructive", style: .destructive)
@@ -204,7 +204,7 @@ class ViewController: UIViewController {
             alert.show()
             
         case .oneTextField:
-            let alert = UIAlertController(style: self.alertStyle, title: "TextField", message: "Secure Entry")
+            let alert = UIAlertController(title: "TextField", message: "Secure Entry", preferredStyle: self.alertStyle)
             
             let textField: TextField.Config = { textField in
                 textField.left(image: #imageLiteral(resourceName: "pen"), color: .black)
@@ -282,7 +282,7 @@ class ViewController: UIViewController {
             alert.show()
             
         case .dataPicker:
-            let alert = UIAlertController(style: self.alertStyle, title: "Date Picker", message: "Select Date")
+            let alert = UIAlertController(title: "Date Picker", message: "Select Date", preferredStyle: self.alertStyle)
             alert.addDatePicker(mode: .dateAndTime, date: Date(), minimumDate: nil, maximumDate: nil) { date in
                 Log(date)
             }
@@ -290,7 +290,7 @@ class ViewController: UIViewController {
             alert.show()
             
         case .pickerView:
-            let alert = UIAlertController(style: self.alertStyle, title: "Picker View", message: "Preferred Content Height")
+            let alert = UIAlertController(title: "Picker View", message: "Preferred Content Height", preferredStyle: self.alertStyle)
             
             let frameSizes: [CGFloat] = (150...300).map { CGFloat($0) }
             let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]

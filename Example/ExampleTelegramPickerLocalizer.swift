@@ -29,9 +29,9 @@ public struct ExampleTelegramPickerLocalizer: TelegramPickerResourceProvider {
     private func noCameraAccessAlert() -> UIAlertController {
         /// User has denied the current app to access the camera.
         let productName = Bundle.main.dlgpicker_appName
-        let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to camera. Please, allow the application to access to camera.")
+        let alert = UIAlertController(title: "Permission denied", message: "\(productName) does not have access to camera. Please, allow the application to access to camera.", preferredStyle: .alert)
         alert.addAction(title: "Settings", style: .destructive) { action in
-            if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsURL)
             }
         }
@@ -42,9 +42,9 @@ public struct ExampleTelegramPickerLocalizer: TelegramPickerResourceProvider {
     private func noPhotosAccessAlert() -> UIAlertController {
         /// User has denied the current app to access the contacts.
         let productName = Bundle.main.dlgpicker_appName
-        let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your photo library.")
+        let alert = UIAlertController(title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your photo library.", preferredStyle: .alert)
         alert.addAction(title: "Settings", style: .destructive) { action in
-            if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsURL)
             }
         }
@@ -53,7 +53,7 @@ public struct ExampleTelegramPickerLocalizer: TelegramPickerResourceProvider {
     }
     
     private func failureAlert(_ error: Error) -> UIAlertController {
-        let alert = UIAlertController(style: .alert, title: "Error", message: error.localizedDescription)
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(title: "OK")
         return alert
     }
