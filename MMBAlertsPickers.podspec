@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.author       = { 'MahmoudMMB' => 'mmbelbeisi@gmail.com' }
   s.platform     = :ios, '10.0'
   s.swift_version = '4.2'
-  s.source       = { :git => 'https://github.com/loicgriffie/MMBAlertsPickers.git', :tag => s.version }
+  s.source       = { :git => 'https://github.com/MahmoudMMB/MMBAlertsPickers.git', :tag => s.version }
   s.source_files  = 'Source/**/*.{swift}'
   s.resource_bundles  = {
     'Countries' => 'Source/Pickers/Locale/Countries.bundle/**'
