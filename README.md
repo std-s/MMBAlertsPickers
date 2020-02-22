@@ -13,7 +13,7 @@
 
 # Alerts & Pickers
 
-Advanced usage of native UIAlertController with TextField, TextView, DatePicker, PickerView, TableView, CollectionView and MapView.
+Advanced usage of native UIAlertController with TextField, TextView, DatePicker, PickerView, TableView, CollectionView and MapView. It supports Arabic countries.
 
 
 
@@ -26,6 +26,7 @@ Advanced usage of native UIAlertController with TextField, TextView, DatePicker,
 - [x] Understandable action button placement.
 - [x] Easy presentation.
 - [x] Pure Swift 4.
+- [x] Arabic countries.
 
 <div align = "center">
 <img src="Assets/gifs/actionSheet-.gif" width="400" />
@@ -451,7 +452,7 @@ There are some things to keep in mind when using `.actionSheet` and `.alert` sty
 #### CocoaPods
 
 ```ruby
-pod 'RLBAlertsPickers', '~> 1.1.1'
+pod 'MMBAlertsPickers'
 ```
 
 #### Manually
