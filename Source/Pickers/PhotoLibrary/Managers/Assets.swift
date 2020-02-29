@@ -76,7 +76,9 @@ public struct Assets {
         
         let newEntry = AssetManager.init(size: size)
         newEntry.manager.allowsCachingHighQualityImages = false
-        cacheManagers.append(newEntry)
+        DispatchQueue.main.async {
+            cacheManagers.append(newEntry)
+        }
         return newEntry.manager
     }
     
