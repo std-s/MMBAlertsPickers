@@ -35,7 +35,7 @@ public struct ExampleTelegramPickerLocalizer: TelegramPickerResourceProvider {
                 UIApplication.shared.open(settingsURL)
             }
         }
-        alert.addAction(title: "OK", style: .cancel)
+        alert.addAction(title: "OK".localized, style: .cancel)
         return alert
     }
     
@@ -48,13 +48,13 @@ public struct ExampleTelegramPickerLocalizer: TelegramPickerResourceProvider {
                 UIApplication.shared.open(settingsURL)
             }
         }
-        alert.addAction(title: "OK", style: .cancel)
+        alert.addAction(title: "OK".localized, style: .cancel)
         return alert
     }
     
     private func failureAlert(_ error: Error) -> UIAlertController {
         let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(title: "OK")
+        alert.addAction(title: "OK".localized)
         return alert
     }
     

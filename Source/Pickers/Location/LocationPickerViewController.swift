@@ -36,9 +36,9 @@ public struct LocationPickerViewControllerSimpleResourceProvider: LocationPicker
     
     public func localizedString(for type: LocationPickerViewControllerResourceStringType) -> String {
         switch type {
-        case .searchBarPlaceholder: return "Search or enter an address"
-        case .selectButtonTitle: return "Select"
-        case .searchHistoryLabel: return "Search History"
+            case .searchBarPlaceholder: return "Search or enter an address".localized
+            case .selectButtonTitle: return "Select".localized
+            case .searchHistoryLabel: return "Search History".localized
         }
     }
     
@@ -290,7 +290,7 @@ final public class LocationPickerViewController: UIViewController {
             if let error = error as NSError?, error.code != 10 { // ignore cancelGeocode errors
                 // show error and remove annotation
                 let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(title: "OK", style: .cancel) { action in
+                alert.addAction(title: "OK".localized, style: .cancel) { action in
                     self.mapView.removeAnnotation(annotation)
                 }
                 alert.show()

@@ -17,7 +17,7 @@ extension UIAlertController {
         var asset: PHAsset?
         var assets: [PHAsset] = []
         
-        let buttonAdd = UIAlertAction(title: "Add", style: .default) { action in
+        let buttonAdd = UIAlertAction(title: "Add".localized, style: .default) { action in
             switch selection {
                 
             case .single(let action):
@@ -184,7 +184,7 @@ final public class PhotoLibraryPickerViewController: UIViewController {
                     UIApplication.shared.open(settingsURL)
                 }
             }
-            alert.addAction(title: "OK", style: .cancel) { [unowned self] action in
+            alert.addAction(title: "OK".localized, style: .cancel) { [unowned self] action in
                 self.alertController?.dismiss(animated: true)
             }
             alert.show()
@@ -199,8 +199,8 @@ final public class PhotoLibraryPickerViewController: UIViewController {
                 completionHandler(assets)
                 
             case .error(let error):
-                let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(title: "OK") { [unowned self] action in
+                let alert = UIAlertController(title: "Error".localized, message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(title: "OK".localized) { [unowned self] action in
                     self.alertController?.dismiss(animated: true)
                 }
                 alert.show()

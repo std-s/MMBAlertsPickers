@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 import Contacts
 
-extension CLPlacemark {
+internal  extension CLPlacemark {
     
     var postalAddressIfAvailable: CNPostalAddress? {
         if #available(iOS 11.0, *) {

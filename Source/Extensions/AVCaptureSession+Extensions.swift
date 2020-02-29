@@ -1,7 +1,7 @@
 import Foundation
 import AVFoundation
 
-extension AVCaptureSession {
+internal extension AVCaptureSession {
     
     @discardableResult func setPresetsAlertnately(_ presets: [Preset]) -> Bool {
         for preset in presets {

@@ -1,6 +1,6 @@
 import UIKit
 
-extension UISegmentedControl {
+internal  extension UISegmentedControl {
     
     /// Font of titles
     func title(font: UIFont) {

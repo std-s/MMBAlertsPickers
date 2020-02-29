@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - Methods
-extension UITextView {
+internal  extension UITextView {
 	
 	/// Scroll to the bottom of text view
 	func scrollToBottom() {

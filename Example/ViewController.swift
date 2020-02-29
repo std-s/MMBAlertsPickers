@@ -227,7 +227,7 @@ class ViewController: UIViewController {
             
             alert.addOneTextField(configuration: textField)
             
-            alert.addAction(title: "OK", style: .cancel)
+            alert.addAction(title: "OK".localized, style: .cancel)
             alert.show()
             
         case .twoTextFields:
@@ -286,7 +286,7 @@ class ViewController: UIViewController {
             alert.addDatePicker(mode: .dateAndTime, date: Date(), minimumDate: nil, maximumDate: nil) { date in
                 Log(date)
             }
-            alert.addAction(title: "Done", style: .cancel)
+            alert.addAction(title: "Done".localized, style: .cancel)
             alert.show()
             
         case .pickerView:
@@ -296,33 +296,33 @@ class ViewController: UIViewController {
             let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
             let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
             
-            alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { vc, picker, index, values in
+            alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue, withSerchBar: true) { vc, picker, index, values  in
                 
                 DispatchQueue.main.async {
-                    UIView.animate(withDuration: 1) {
+                    UIView.animate(withDuration: 1.0) {
                         vc.preferredContentSize.height = frameSizes[index.row]
                     }
                 }
             }
-            alert.addAction(title: "Done", style: .cancel)
+            alert.addAction(title: "Done".localized, style: .cancel)
             alert.show()
             
         case .countryPicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addLocalePicker(type: .country) { info in Log(info) }
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
         case .phoneCodePicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addLocalePicker(type: .phoneCode) { info in Log(info) }
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
         case .currencyPicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addLocalePicker(type: .currency) { info in Log(info) }
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
         case .imagePicker:
@@ -336,21 +336,21 @@ class ViewController: UIViewController {
                 selection: .single(action: { image in
                     Log(image)
                 }))
-            alert.addAction(title: "OK", style: .cancel)
+            alert.addAction(title: "OK".localized, style: .cancel)
             alert.show()
             
         case .photoLibraryPicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addPhotoLibraryPicker(flow: .vertical, paging: false,
                 selection: .multiple(action: { assets in Log(assets) }))
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
             
         case .colorPicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addColorPicker(color: UIColor(hex: 0xFF2DC6)) { color in Log(color) }
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
         case .textViewer:
@@ -373,19 +373,19 @@ class ViewController: UIViewController {
                 .list("Apple Print Products"),
                 .normal("*You can return software, provided that it has not been installed on any computer. Software that contains a printed software license may not be returned if the seal or sticker on the software media packaging is broken.")]
             alert.addTextViewer(text: .attributedText(text))
-            alert.addAction(title: "OK", style: .cancel)
+            alert.addAction(title: "OK".localized, style: .cancel)
             alert.show()
             
         case .contactsPicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addContactsPicker { contact in Log(contact) }
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
         case .locationPicker:
             let alert = UIAlertController(style: self.alertStyle)
             alert.addLocationPicker { location in Log(location) }
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
             
         case .telegramPicker, .singlePhoto:
@@ -420,7 +420,7 @@ class ViewController: UIViewController {
             
             alert.setTelegramPicker(picker)
             
-            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Cancel".localized, style: .cancel)
             alert.show()
         }
     }

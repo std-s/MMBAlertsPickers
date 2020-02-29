@@ -27,6 +27,7 @@ Advanced usage of native UIAlertController with TextField, TextView, DatePicker,
 - [x] Easy presentation.
 - [x] Pure Swift 4.
 - [x] Arabic countries.
+- [x] Picker view with search bar.
 
 <div align = "center">
 <img src="Assets/gifs/actionSheet-.gif" width="400" />

@@ -11,7 +11,7 @@ extension UIAlertController {
     public func addLocalePicker(type: LocalePickerViewController.Kind, selection: @escaping LocalePickerViewController.Selection) {
         var info: LocaleInfo?
         let selection: LocalePickerViewController.Selection = selection
-        let buttonSelect: UIAlertAction = UIAlertAction(title: "Select", style: .default) { action in
+        let buttonSelect: UIAlertAction = UIAlertAction(title: "Select".localized, style: .default) { action in
             selection(info)
         }
         buttonSelect.isEnabled = false
@@ -177,7 +177,7 @@ final public class LocalePickerViewController: UIViewController {
                 DispatchQueue.main.async {
                     
                     let alert = UIAlertController(title: error.title, message: error.message, preferredStyle: .alert)
-                    alert.addAction(title: "OK", style: .cancel) { action in
+                    alert.addAction(title: "OK".localized, style: .cancel) { action in
                         self.indicatorView.stopAnimating()
                         self.alertController?.dismiss(animated: true)
                     }

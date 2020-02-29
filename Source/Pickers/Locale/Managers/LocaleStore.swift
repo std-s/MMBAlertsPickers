@@ -34,12 +34,18 @@ struct LocaleStore {
             var result: [LocaleInfo] = []
             for jsonObject in jsonObjects {
                 guard let countryObj = jsonObject as? Dictionary<String, Any> else { continue }
-                guard let country = countryObj["name"] as? String,
+                guard let country = self.countryName(country: (countryObj["code"] as? String) ?? "PS"),
                     let code = countryObj["code"] as? String,
                     let phoneCode = countryObj["dial_code"] as? String else {
                         continue
                 }
-                let new = LocaleInfo(country: country, code: code, phoneCode: phoneCode)
+                var countrry: String = country
+                var coode = code
+                if code == "IL" {
+                    countrry = "Palestine".localized
+                    coode = "PS"
+                }
+                let new = LocaleInfo(country: countrry, code: coode, phoneCode: phoneCode)
                 result.append(new)
             }
             return completionHandler(FetchResults.success(response: result))
@@ -47,6 +53,11 @@ struct LocaleStore {
         
         let error: (title: String?, message: String?) = (title: "JSON Error", message: "Couldn't parse json to Info")
         return completionHandler(FetchResults.error(error: error))
+    }
+    public static func countryName(country: String) -> String? {
+        
+        let current = Locale(identifier: LanguageManager.shared.isRTL() ? "ar" : "en")
+        return current.localizedString(forRegionCode: country)
     }
     
     public static func fetch(completionHandler: @escaping (GroupedByAlphabetsFetchResults) -> ()) {
@@ -81,5 +92,40 @@ struct LocaleStore {
                 completionHandler(GroupedByAlphabetsFetchResults.error(error: error))
             }
         }
+    }
+}
+
+
+class LanguageManager {
+    
+    static let shared = LanguageManager()
+    
+    let APPLE_LANGUAGE_KEY = "AppleLanguages"
+    
+    func isRTL() -> Bool {
+        let langs = UserDefaults.standard.value(forKey: "AppleLanguages") as? Array<String>
+        return (langs?.first?.hasPrefix("ar"))! ? true : false
+    }
+    
+    func currentAppleLanguage() -> String{
+        let userdef = UserDefaults.standard
+        let langArray = userdef.object(forKey: APPLE_LANGUAGE_KEY) as! NSArray
+        let current = langArray.firstObject as! String
+        let endIndex = current.startIndex
+        let currentWithoutLocale = current.substring(to: current.index(endIndex, offsetBy: 2))
+        return currentWithoutLocale
+    }
+    
+    func currentAppleLanguageFull() -> String{
+        let userdef = UserDefaults.standard
+        let langArray = userdef.object(forKey: APPLE_LANGUAGE_KEY) as! NSArray
+        let current = langArray.firstObject as! String
+        return current
+    }
+    
+    func setAppleLAnguageTo(lang: String) {
+        let userdef = UserDefaults.standard
+        userdef.set([lang,currentAppleLanguage()], forKey: APPLE_LANGUAGE_KEY)
+        userdef.synchronize()
     }
 }

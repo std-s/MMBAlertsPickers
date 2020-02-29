@@ -1,6 +1,6 @@
 import Foundation
 
-extension Array {
+internal extension Array {
     
     @discardableResult
     mutating func append(_ newArray: Array) -> CountableRange<Int> {
