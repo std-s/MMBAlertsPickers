@@ -25,7 +25,7 @@ Advanced usage of native UIAlertController with TextField, TextView, DatePicker,
 - [x] Button customization: image and title color.
 - [x] Understandable action button placement.
 - [x] Easy presentation.
-- [x] Pure Swift 4.
+- [x] Pure Swift 5.
 - [x] Arabic countries.
 - [x] Picker view with search bar.
 
