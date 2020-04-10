@@ -27,7 +27,25 @@ internal extension String {
     }
     
     var localized: String {
-        return NSLocalizedString(self, comment: "")
+        let bundle = Bundle.resources ?? Bundle.main
+        return bundle.localizedString(
+            forKey: self,
+            value: "",
+            table: nil
+        )
+    }
+}
+
+extension Bundle {
+    static var framework: Bundle {
+        return Bundle(for: PickerViewViewController.self)
+    }
+    
+    static var resources: Bundle? {
+        guard let path = Bundle.main.path(forResource: "MMBAlertsPickers", ofType: "bundle") else {
+            return nil
+        }
+        return  Bundle(path: path)
     }
 }
 

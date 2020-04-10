@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = 'MMBAlertsPickers'
-  s.version      = '1.1.4'
+  s.version      = '1.1.5'
   s.summary      = 'Advanced usage of UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView adapted for using in DialogSDK'
   s.homepage     = 'https://github.com/MahmoudMMB/MMBAlertsPickers'
   s.license      = 'MIT'
@@ -20,6 +20,9 @@ Pod::Spec.new do |s|
   s.source_files  = 'Source/**/*.{swift}'
   s.resource_bundles  = {
     'Countries' => 'Source/Pickers/Locale/Countries.bundle/**'
+    'MMBAlertsPickers' => [
+      'Source/Views/*.{lproj,storyboard}'
+    ]
   }
   s.resources = 'Example/Resources/*.xcassets'
 

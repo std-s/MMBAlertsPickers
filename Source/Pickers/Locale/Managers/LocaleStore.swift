@@ -40,10 +40,9 @@ struct LocaleStore {
                         continue
                 }
                 var countrry: String = country
-                var coode = code
-                if code == "IL" {
+                let coode = code
+                if code == "PS" {
                     countrry = "Palestine".localized
-                    coode = "PS"
                 }
                 let new = LocaleInfo(country: countrry, code: coode, phoneCode: phoneCode)
                 result.append(new)
