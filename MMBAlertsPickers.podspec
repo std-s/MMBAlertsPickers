@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.resource_bundles  = {
     'Countries' => ['Source/Pickers/Locale/Countries.bundle/**'],
     'MMBAlertsPickers' => [
-      'Source/Views/*.{lproj,storyboard}'
+      'Source/Views/*.{lproj,storyboard}/*.{xib,strings}'
     ]
   }
   s.resources = 'Example/Resources/*.xcassets'

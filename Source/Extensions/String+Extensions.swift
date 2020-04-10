@@ -27,12 +27,7 @@ internal extension String {
     }
     
     var localized: String {
-        let bundle = Bundle.resources ?? Bundle.main
-        return bundle.localizedString(
-            forKey: self,
-            value: "",
-            table: nil
-        )
+        return NSLocalizedString(self, tableName: "MMBAlertsPickersLocalizable", bundle: Bundle(for: PickerViewViewController.self), value: "", comment: "")
     }
 }
 

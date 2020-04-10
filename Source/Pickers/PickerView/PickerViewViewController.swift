@@ -53,6 +53,7 @@ final public class PickerViewViewController: UIViewController {
             self.view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 16, height: 216))
             pickerView.frame = CGRect(x: 15, y: 50, width: UIScreen.main.bounds.width - 50, height: 216)
             let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.width, height: 50))
+            searchBar.textField?.placeholder = "Search".localized
             pickerView.delegate = self
             searchBar.delegate = self
             self.view.addSubview(searchBar)
