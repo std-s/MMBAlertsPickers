@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => 'https://github.com/MahmoudMMB/MMBAlertsPickers.git', :tag => s.version }
   s.source_files  = 'Source/**/*.{swift}'
   s.resource_bundles  = {
-    'Countries' => 'Source/Pickers/Locale/Countries.bundle/**'
+    'Countries' => ['Source/Pickers/Locale/Countries.bundle/**'],
     'MMBAlertsPickers' => [
       'Source/Views/*.{lproj,storyboard}'
     ]
