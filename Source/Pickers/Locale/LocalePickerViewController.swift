@@ -54,7 +54,10 @@ final public class LocalePickerViewController: UIViewController {
     
     //fileprivate var searchBarIsActive: Bool = false
     
-    fileprivate lazy var searchView: UIView = UIView()
+    
+    fileprivate lazy var searchView: UIView = { [unowned self] in
+        return $0
+        }(UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.8, height: 50)))
     
     fileprivate lazy var searchController: UISearchController = { [unowned self] in
         $0.searchResultsUpdater = self
@@ -106,7 +109,17 @@ final public class LocalePickerViewController: UIViewController {
     }
     
     override public func loadView() {
-        view = tableView
+//        view = tableView
+//        searchView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.8, height: 50)
+        searchView.addSubview(searchController.searchBar)
+        searchController.searchBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.8, height: 50)
+        tableView.tableHeaderView = searchView
+        let stack = UIStackView.init(arrangedSubviews: [tableView])
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 10
+        stack.axis = .vertical
+        view = stack
     }
     
     override public func viewDidLoad() {
@@ -114,8 +127,8 @@ final public class LocalePickerViewController: UIViewController {
         
         view.addSubview(indicatorView)
         
-        searchView.addSubview(searchController.searchBar)
-        tableView.tableHeaderView = searchView
+//        searchView.addSubview(searchController.searchBar)
+//        tableView.tableHeaderView = searchView
         
         //extendedLayoutIncludesOpaqueBars = true
         //edgesForExtendedLayout = .bottom

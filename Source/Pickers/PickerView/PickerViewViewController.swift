@@ -58,7 +58,7 @@ final public class PickerViewViewController: UIViewController {
             searchBar.delegate = self
             self.view.addSubview(searchBar)
             self.view.addSubview(pickerView)
-            self.preferredContentSize.height = 216 + searchBar.height
+            self.preferredContentSize.height = 216 + searchBar.height + (self.navigationController?.navigationBar.height ?? 44)
             self.isFromSearchArray = false
         }else{
             view = pickerView

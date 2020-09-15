@@ -214,7 +214,7 @@ final public class PhotoLibraryPickerViewController: UIViewController {
 extension PhotoLibraryPickerViewController: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let asset = assets[indexPath.item]
+        let asset = assets.reversed()[indexPath.item]
         switch selection {
             
         case .single(let action)?:
@@ -255,7 +255,7 @@ extension PhotoLibraryPickerViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemWithImage.self), for: indexPath) as? ItemWithImage else { return UICollectionViewCell() }
-        let asset = assets[indexPath.item]
+        let asset = assets.reversed()[indexPath.item]
         Assets.resolve(asset: asset, size: item.bounds.size) { new in
             item.imageView.image = new
         }
