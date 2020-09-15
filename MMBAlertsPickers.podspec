@@ -17,8 +17,8 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '10.0'
   s.swift_version = '5'
   s.source       = { :git => 'https://github.com/MahmoudMMB/MMBAlertsPickers.git', :tag => s.version }
-  s.source_files = '*.{swift,h,m,xib,storyboard,lproj}' 
+  s.source_files = 'MMBAlertsPickers/*.{swift,h,m,xib,storyboard,lproj}' 
   s.resources = ['Source/Pickers/Locale/*.{swift,h,m,xib}', 'Source/Views/*.{lproj,storyboard}/*.{xib,strings}']
-  s.exclude_files = "*.plist"
+  s.exclude_files = "MMBAlertsPickers/*.plist"
 
 end
